@@ -41,23 +41,17 @@ export default function SignIn() {
                       onBlur={handleBlur}
                       className={errors.username ? "p-invalid" : ""}
                     />
-                    <FieldHelp
-                      touched={touched}
-                      errors={errors}
-                      fieldName="username"
-                      id="username"
-                    />
+                    <FieldHelp errors={errors} fieldName="username" id="username" />
                   </div>
                   <div className="p-field p-fluid">
                     <label htmlFor="password">Password</label>
-                    <InputText id="password" onChange={handleChange} onBlur={handleBlur} />
-                    <FieldHelp
-                      touched={touched}
-                      errors={errors}
-                      fieldName="password"
+                    <InputText
                       id="password"
-                      className={errors.username ? "p-invalid" : ""}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      className={errors.password ? "p-invalid" : ""}
                     />
+                    <FieldHelp errors={errors} fieldName="password" id="password" />
                   </div>
                   <div className="p-d-flex p-jc-end">
                     <Button

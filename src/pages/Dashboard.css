@@ -1,0 +1,14 @@
+.day-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr 2fr 1fr 2fr 2fr 1fr 2fr 2fr 1fr 2fr 2fr 2fr 1fr;
+  column-gap: 0.25em;
+}
+
+.day-row div {
+  height: 2em;
+  background-color: blueviolet;
+}
+
+.day-row div.break {
+  background-color: burlywood;
+}
