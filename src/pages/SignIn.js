@@ -31,7 +31,7 @@ export default function SignIn() {
         <div className="p-col-4">
           <Card>
             <Formik validationSchema={loginSchema} onSubmit={handleSubmit} initialValues={{}}>
-              {({ handleChange, handleBlur, errors, touched, isValid, isSubmitting }) => (
+              {({ handleChange, handleBlur, errors, isValid, isSubmitting }) => (
                 <Form noValidate>
                   <div className="p-field p-fluid">
                     <label htmlFor="username">Username</label>

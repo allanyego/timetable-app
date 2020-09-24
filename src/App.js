@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import { Menubar } from "primereact/menubar";
 import { Sidebar } from "primereact/sidebar";
+import { InputTextarea } from "primereact/inputtextarea";
 import { BrowserRouter as Router, Switch, Route, Redirect, useHistory } from "react-router-dom";
 
 import "./App.css";
 import SignIn from "./pages/SignIn";
 import Dashboard from "./pages/Dashboard";
+import SubjectForm from "./components/SubjectForm";
+import TeacherForm from "./components/TeacherForm";
+import LessonForm from "./components/LessonForm";
+import ClassForm from "./components/ClassForm";
+import StreamForm from "./components/StreamForm";
 
 function App() {
   return (
@@ -36,18 +42,17 @@ function TMenuBar() {
   function renderSwitch(param) {
     switch (param) {
       case "subject":
-        return <form>For subject</form>;
+        return <SubjectForm />;
       case "teacher":
-        return <form>For teacher</form>;
+        return <TeacherForm />;
       case "stream":
-        return <form>For stream</form>;
+        return <StreamForm />;
       case "class":
-        return <form>For class</form>;
+        return <ClassForm />;
       case "lesson":
-        return <form>For lesson</form>;
+        return <LessonForm />;
       default:
-        setSideBarOpen(false);
-        break;
+        return setSideBarOpen(false);
     }
   }
 
