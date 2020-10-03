@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import { InputText } from "primereact/inputtext";
 import { MultiSelect } from "primereact/multiselect";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
@@ -93,7 +92,13 @@ const slots = [
   },
 ];
 
-function ClassOptionItem(option, props) {
+const CLIENT_ID = "628309068506-6jmio10r67b0m1uebspfd1hapv4v9fhu.apps.googleusercontent.com";
+const CLIENT_SECRET = "ROLmIItUUANftlDBaaMCn_h7";
+const API_KEY = "AIzaSyDXWyeAFTflrsl7lyOhicUUSFeVFUlj0LY";
+const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
+const SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
+
+function classOptionItem(option, props) {
   return (
     <div>
       {option.level} - {option.stream}
@@ -101,84 +106,84 @@ function ClassOptionItem(option, props) {
   );
 }
 
-function SelectedClassOptionItem(option, props) {
+function selectedClassOptionItem(option, props) {
   if (option) {
-    return (
-      <div>
-        {option.level} - {option.stream}
-      </div>
-    );
+    return classOptionItem(option, props);
   }
 
-  return <span>{props.placeholder}</span>;
+  return <div>{props.placeholder}</div>;
 }
 
-function SelectedItem(option, props) {
+function selectedDayOption(option, props) {
   console.log(option);
-  return <>"Rupper duppa"</>;
-}
-
-function OptionItem(option, props) {
   if (option) {
-    return <div>{option.name} - 2345</div>;
+    return <div>{option.name}</div>;
   }
-
-  return <span>{props.placeholder}</span>;
+  return <div>{props.placeholder}</div>;
 }
 
-const countries = [
-  { name: "Australia", code: "AU" },
-  { name: "Brazil", code: "BR" },
-  { name: "China", code: "CN" },
-  { name: "Egypt", code: "EG" },
-  { name: "France", code: "FR" },
-  { name: "Germany", code: "DE" },
-  { name: "India", code: "IN" },
-  { name: "Japan", code: "JP" },
-  { name: "Spain", code: "ES" },
-  { name: "United States", code: "US" },
-];
-
-function selectedCountryTemplate(option, props) {
-  if (option) {
-    return (
-      <div className="country-item country-item-value">
-        <img
-          alt={option.name}
-          src="showcase/demo/images/flag_placeholder.png"
-          className={`flag flag-${option.code.toLowerCase()}`}
-        />
-        <div>{option.name}</div>
-      </div>
-    );
-  }
-
-  return <span>{props.placeholder}</span>;
-}
-
-function countryOptionTemplate(option) {
-  return (
-    <div className="country-item">
-      <img
-        alt={option.name}
-        src="showcase/demo/images/flag_placeholder.png"
-        className={`flag flag-${option.code.toLowerCase()}`}
-      />
-      <div>{option.name}</div>
-    </div>
-  );
+function dayOption(option, props) {
+  return <div>{option.name}</div>;
 }
 
 export default function LessonForm() {
-  const [selectedCountry, setSelectedCountry] = useState(undefined);
+  function initClient() {
+    window.gapi.client
+      .init({
+        apiKey: API_KEY,
+        clientId: CLIENT_ID,
+        discoveryDocs: DISCOVERY_DOCS,
+        scope: SCOPES,
+      })
+      .then(() => {
+        console.log("Calendar init.");
+      });
+  }
+  /**
+   * Print the summary and start datetime/date of the next ten events in
+   * the authorized user's calendar. If no events are found an
+   * appropriate message is printed.
+   */
+  function listUpcomingEvents() {
+    console.log("Calendar api was called", window.gapi);
+    window.gapi.load("client:auth2", initClient);
+    // window.gapi.client.calendar.events
+    //   .list({
+    //     calendarId: "primary",
+    //     timeMin: new Date().toISOString(),
+    //     showDeleted: false,
+    //     singleEvents: true,
+    //     maxResults: 10,
+    //     orderBy: "startTime",
+    //   })
+    //   .then(function (response) {
+    //     const events = response.result.items;
+    //     console.log(events);
+    //     // appendPre("Upcoming events:");
 
-  const onCountryChange = (e) => {
-    setSelectedCountry(e.value);
-  };
+    //     // if (events.length > 0) {
+    //     //   for (i = 0; i < events.length; i++) {
+    //     //     var event = events[i];
+    //     //     var when = event.start.dateTime;
+    //     //     if (!when) {
+    //     //       when = event.start.date;
+    //     //     }
+    //     //     console.log(event.summary + " (" + when + ")");
+    //     //   }
+    //     // } else {
+    //     //   console.log("No upcoming events found.");
+    //     // }
+    //   });
+  }
+
+  useEffect(() => {
+    listUpcomingEvents();
+  }, []);
+
   return (
     <div>
       <h2>Add lesson</h2>
-      {/* <Formik
+      <Formik
         validationSchema={lessonSchema}
         onSubmit={(values, { setSubmitting }) => {
           console.log("VALUES", values);
@@ -186,20 +191,19 @@ export default function LessonForm() {
         }}
         initialValues={{}}
       >
-        {({ handleChange, handleBlur, errors, isValid, isSubmitting }) => (
+        {({ handleChange, handleBlur, values, errors, isValid, isSubmitting }) => (
           <Form noValidate>
             <div className="p-field p-fluid">
               <label htmlFor="day">Day of week</label>
               <Dropdown
                 id="day"
                 name="day"
-                value="day"
+                value={values.day}
                 options={days}
                 optionLabel="name"
                 optionValue="name"
-                onChange={(e) => setDay(e.value)}
-                valueTemplate={SelectedItem}
-                itemTemplate={OptionItem}
+                onChange={handleChange}
+                onBlur={handleBlur}
                 placeholder="Select a day"
               />
               <FieldHelp errors={errors} fieldName="day" id="day" />
@@ -209,6 +213,7 @@ export default function LessonForm() {
               <MultiSelect
                 id="slots"
                 name="slots"
+                value={values.slots}
                 options={slots}
                 optionLabel="name"
                 optionValue="name"
@@ -223,6 +228,7 @@ export default function LessonForm() {
               <Dropdown
                 id="teacher"
                 name="teacher"
+                value={values.teacher}
                 options={teachers}
                 optionLabel="name"
                 optionValue="name"
@@ -240,23 +246,26 @@ export default function LessonForm() {
               <Dropdown
                 id="class"
                 name="class"
+                value={values.class}
                 options={classes}
                 optionLabel="level"
                 optionValue="level"
                 filter
                 showClear
                 filterBy="level,stream"
-                itemTemplate={ClassOptionItem}
-                valueTemplate={SelectedClassOptionItem}
+                itemTemplate={classOptionItem}
+                valueTemplate={selectedClassOptionItem}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 placeholder="Select a stream"
               />
               <FieldHelp errors={errors} fieldName="class" id="class" />
             </div>
+            <pre>{JSON.stringify(values, null, 2)}</pre>
             <div className="p-d-flex p-jc-between">
               <Button label="Cancel" className="p-button-secondary" />
               <Button
+                type="submit"
                 label="Add"
                 disabled={!isValid || isSubmitting}
                 icon={`pi ${isSubmitting ? "pi-spin pi-spinner" : "pi-sign-in"}`}
@@ -264,21 +273,7 @@ export default function LessonForm() {
             </div>
           </Form>
         )}
-      </Formik> */}
-
-      <h5>Advanced with Templating, Filtering and Clear Icon</h5>
-      <Dropdown
-        value={selectedCountry}
-        options={countries}
-        onChange={onCountryChange}
-        optionLabel="name"
-        filter
-        showClear
-        filterBy="name"
-        placeholder="Select a Country"
-        valueTemplate={selectedCountryTemplate}
-        itemTemplate={countryOptionTemplate}
-      />
+      </Formik>
     </div>
   );
 }

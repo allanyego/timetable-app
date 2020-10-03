@@ -1,0 +1,11 @@
+.p-submenu-list {
+  z-index: 3 !important;
+}
+
+.App .p-menubar.p-component {
+  justify-content: space-between;
+}
+
+.App .p-menubar.p-component .p-submenu-list {
+  right: 0;
+}

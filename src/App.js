@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Menubar } from "primereact/menubar";
 import { Sidebar } from "primereact/sidebar";
-import { InputTextarea } from "primereact/inputtextarea";
-import { BrowserRouter as Router, Switch, Route, Redirect, useHistory } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
 import "./App.css";
 import SignIn from "./pages/SignIn";
@@ -57,10 +56,6 @@ function TMenuBar() {
   }
 
   const menuModel = [
-    {
-      label: "Schedule",
-      icon: "pi pi-table",
-    },
     {
       label: "Resources",
       icon: "pi pi-plus",
