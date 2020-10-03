@@ -92,12 +92,6 @@ const slots = [
   },
 ];
 
-const CLIENT_ID = "628309068506-6jmio10r67b0m1uebspfd1hapv4v9fhu.apps.googleusercontent.com";
-const CLIENT_SECRET = "ROLmIItUUANftlDBaaMCn_h7";
-const API_KEY = "AIzaSyDXWyeAFTflrsl7lyOhicUUSFeVFUlj0LY";
-const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
-const SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
-
 function classOptionItem(option, props) {
   return (
     <div>
